@@ -61,7 +61,7 @@ def cin_dir(th,a):
 
 # valores articulares arbitrarios para la cinemática directa inicial
 th=[0.,0.,0.]
-a =[5.,5.,5.]
+a =[5.,1.,5.]
 
 # rango de valores máximo para cada articulación de rotación
 range_th =  [[-0.785398, 0.785398],
@@ -73,9 +73,8 @@ range_a =  [[0, 10.],
           [0, 10.],
           [0, 10.]]
 
-
 # indicar si las articulaciones son de rotación (0) o prismaticas (1)
-articulation_type = [0, 0, 1]
+articulation_type = [0, 1, 0]
 
 L = sum(a) # variable para representación gráfica
 EPSILON = .01 # error
@@ -121,10 +120,18 @@ while (dist > EPSILON and abs(prev-dist) > EPSILON/100.):
       th[targetIndex] += alfa
 
       # Check constraints.
+      th[targetIndex] = th[targetIndex] % (pi * 2)
       if th[targetIndex] < range_th[targetIndex][0]:
         th[targetIndex] = range_th[targetIndex][0]
       elif th[targetIndex] > range_th[targetIndex][1]:
         th[targetIndex] = range_th[targetIndex][1]
+
+
+      # angulo = th[targetIndex] % (pi * 2)
+      # if angulo < range_th[targetIndex][0]:
+      #   angulo = range_th[targetIndex][0]
+      # elif angulo > range_th[targetIndex][1]:
+      #   angulo = range_th[targetIndex][1]
 
     # Articulacion prismática.
     elif articulation_type[targetIndex] == 1:
